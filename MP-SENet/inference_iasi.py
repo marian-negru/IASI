@@ -53,12 +53,9 @@ def inference(a):
     if not os.path.exists(a.output_dir):
         os.makedirs(a.output_dir)
     
-    ####################
-    #dtype = torch.float16
-    model = pruning(copy.deepcopy(model), mode='global')
-    #model = quantization(copy.deepcopy(model), dtype=dtype)
-    #model = model.to(dtype)
-    #model = model.half()
+    #################### IASI
+    model = pruning(copy.deepcopy(model), mode='global', amount=0.2)
+    #model = quantization(copy.deepcopy(model), dtype=dtype)    #model = model.to(dtype)
     ####################
     
     with torch.no_grad():
@@ -67,12 +64,12 @@ def inference(a):
             noisy_wav = torch.from_numpy(noisy_wav).to(device)
             norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
  
-            ###################
+            ################### IASI
             if len(noisy_wav) >= 20 * h.segment_size:  # change this number
                 overlap = 0.0
                 window_type = 'rectangular'
                 noisy_wav = (noisy_wav * norm_factor)
-                noisy_windows = windowing(noisy_wav, h.segment_size, overlap=overlap, window_type=window_type)
+                noisy_windows = windowing(noisy_wav, h.segment_size, overlap=overlap, window_type=window_type) 
                 generated_windows = torch.zeros_like(noisy_windows)
                 for idx_window, noisy_window in enumerate(noisy_windows):
                     noisy_window = noisy_window[None, ...]
@@ -86,11 +83,9 @@ def inference(a):
                 audio_g = audio_g[:len(noisy_wav)]  # remove padding
             #################
 
-            else:
+            else:  # initial code
                 noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
                 noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-                #with torch.autocast(device_type='cpu', dtype=torch.float16):
-                #with torch.cuda.amp.autocast():  # use mixed precision
                 amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
                 audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
 

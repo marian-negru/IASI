@@ -51,7 +51,7 @@ python3 inference_iasi.py
 ```
 Be sure to change paths and methods accordingly.
 
-**Question** Does the model run succesfully? If yes, why? If not, why?
+**Question**: Does the model run succesfully? If yes, why? If not, why?
 
 **Ideas to modify code** -- to be discussed 
 
@@ -62,15 +62,15 @@ Tutorial available [here](https://www.datature.io/blog/a-comprehensive-guide-to-
 
 Torch Pruning documentation available [here](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html).
 
-**Question** Is this implementation of pruning efficient?
+**Question**: Is this implementation of pruning efficient?
 
-**Question** Which type of pruning do we want in this case?
+**Question**: Which type of pruning do we want in this case?
 
 **Exercise**: apply local pruning and save prediction. Use L1 and Random pruning (make sure to change output dir when switcing functions)
 
 **Exercise**: apply global pruning and save prediction. Use L1 and Random pruning (make sure to change output dir when switcing functions)
 
-**Exercise** compare methods and decide what is the best one. Call L1 (MAE) and L2 (MSE) functions from torch separatelly. Also listen to the samples! Make a comparison table!
+**Exercise**: compare methods and decide what is the best one. Call L1 (MAE) and L2 (MSE) functions from torch separatelly. Also listen to the samples! Make a comparison table!
 
 ## Discussion
 

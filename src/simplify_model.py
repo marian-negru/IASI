@@ -8,13 +8,10 @@ def pruning(model, mode='global', amount=0.2):
             if hasattr(module, 'weight'):  # some modules do not have a weight attribute
                 # prune % amount of connections in all 2D-conv layers
                 if isinstance(module, torch.nn.Conv2d):
-                    prune.l1_unstructured(module, name='weight', amount=amount)
+                    prune.l1_unstructured(module, name='weight', amount=amount)  # Use L1 or Random
                     prune.remove(module, 'weight')  # This makes pruning permanent
-
-                #for name_param, param in module.named_parameters():
-                #    print(F'name param is {name_param} for module {module}')
-                #    if "weight" in name_param:
-                #        prune.l1_unstructured(param, name='weight', amount=amount)
+                    
+                ### Add code for pruning Linear layers
 
     elif mode == 'global':
         parameters_to_prune = []
