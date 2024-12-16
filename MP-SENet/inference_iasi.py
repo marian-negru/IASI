@@ -53,12 +53,8 @@ def inference(a):
     if not os.path.exists(a.output_dir):
         os.makedirs(a.output_dir)
     
-    ####################
-    #dtype = torch.float16
-    model = pruning(copy.deepcopy(model), mode='global')
-    #model = quantization(copy.deepcopy(model), dtype=dtype)
-    #model = model.to(dtype)
-    #model = model.half()
+    #################### IASI
+    # call pruning function from src.simplify_model
     ####################
     
     with torch.no_grad():
@@ -67,12 +63,12 @@ def inference(a):
             noisy_wav = torch.from_numpy(noisy_wav).to(device)
             norm_factor = torch.sqrt(len(noisy_wav) / torch.sum(noisy_wav ** 2.0)).to(device)
  
-            ###################
-            if len(noisy_wav) >= 20 * h.segment_size:  # change this number
-                overlap = 0.0
-                window_type = 'rectangular'
+            ################### IASI
+            if len(noisy_wav) >= 20 * h.segment_size:  ### change this number
+                overlap = 0.0  ### change?
+                window_type = 'rectangular'   ### change?
                 noisy_wav = (noisy_wav * norm_factor)
-                noisy_windows = windowing(noisy_wav, h.segment_size, overlap=overlap, window_type=window_type)
+                noisy_windows = None ### call windowing function from src.process_audio
                 generated_windows = torch.zeros_like(noisy_windows)
                 for idx_window, noisy_window in enumerate(noisy_windows):
                     noisy_window = noisy_window[None, ...]
@@ -82,15 +78,13 @@ def inference(a):
                     amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
                     audio_g_window = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
                     generated_windows[idx_window] = audio_g_window
-                audio_g = dewindowing(generated_windows, h.segment_size, overlap=overlap, window_type=window_type)
+                audio_g = None ### call dewindowing function from src.process_audio
                 audio_g = audio_g[:len(noisy_wav)]  # remove padding
             #################
 
-            else:
+            else:  # initial code
                 noisy_wav = (noisy_wav * norm_factor).unsqueeze(0)
                 noisy_amp, noisy_pha, noisy_com = mag_pha_stft(noisy_wav, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
-                #with torch.autocast(device_type='cpu', dtype=torch.float16):
-                #with torch.cuda.amp.autocast():  # use mixed precision
                 amp_g, pha_g, com_g = model(noisy_amp, noisy_pha)
                 audio_g = mag_pha_istft(amp_g, pha_g, h.n_fft, h.hop_size, h.win_size, h.compress_factor)
 
@@ -104,8 +98,10 @@ def inference(a):
 def main():
     print('Initializing Inference Process..')
 
+    ######## IASI to change
     input_dir = './Noisy_files/'
-    output_dir = './Predict_files_original/' # change this path for different runs
+    output_dir = './Predict_files_original/' # change this path for different runs and save audios
+    ######## 
     checkpoint = './best_ckpt/g_best_vb'
 
     parser = argparse.ArgumentParser()

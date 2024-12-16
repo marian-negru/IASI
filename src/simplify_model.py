@@ -7,28 +7,31 @@ def pruning(model, mode='global', amount=0.2):
         for name, module in model.named_modules():
             if hasattr(module, 'weight'):  # some modules do not have a weight attribute
                 # prune % amount of connections in all 2D-conv layers
+                
+                ######### IASI to change
                 if isinstance(module, torch.nn.Conv2d):
-                    prune.l1_unstructured(module, name='weight', amount=amount)
-                    prune.remove(module, 'weight')  # This makes pruning permanent
+                    pass # to be deleted
+                    #Add prune method applied on weight of module. Use L1 or Random
+                    #Add code that removes original weights and keeps only pruned weights
+                
+                ### Add code for pruning Linear layers
 
-                #for name_param, param in module.named_parameters():
-                #    print(F'name param is {name_param} for module {module}')
-                #    if "weight" in name_param:
-                #        prune.l1_unstructured(param, name='weight', amount=amount)
+		##########
 
     elif mode == 'global':
         parameters_to_prune = []
         for name, module in model.named_modules():
             if hasattr(module, 'weight'):  # some modules do not have a weight attribute
                 parameters_to_prune.append((module, 'weight'))
-        prune.global_unstructured(
-            parameters_to_prune,
-            pruning_method=prune.RandomUnstructured,  # use L1Unstructured or RandomUnstructured
-            amount=amount,
-        )
+                
+        ############## IASI to change
+        prune.global_unstructured( #ADD code here)  # use L1Unstructured or RandomUnstructured
+    
         for name, module in model.named_modules():
             if hasattr(module, 'weight'):  # some modules do not have a weight attribute
-                prune.remove(module, 'weight')  # This makes pruning permanent
+                pass
+                #Add code that removes original weights and keeps only pruned weights
+        ############
 
     print(dict(model.named_buffers()).keys())  # to verify that all masks exist
 

@@ -3,10 +3,10 @@ import torch
 import librosa
 
 #import torchmetrics  # in case you want better audio metrics
-#torchmetrics.functional.audio.signal_noise_ratio(predict, target)
-#torchmetrics.functional.audio.scale_invariant_signal_distortion_ratio(predict, target)
 
-metric_function = torch.nn.L1Loss(reduction='mean')  # you can try different functions
+############## IASI to change
+metric_function = # Insert L1 torch function or L2. You can also try others from torchmetrics 
+##############
 
 def compute_metric(predict, target):    
     metric = metric_function(predict, target)
@@ -14,8 +14,10 @@ def compute_metric(predict, target):
     return metric
 
 def check_differences():
+    ####### IASI
     path_original = '../MP-SENet/Predict_files_original/'  # modify this
     path_pruned = '../MP-SENet/Predict_files_prune_global_random/'   # modify this
+    ####### 
     sr = 16000  # this should be 16 kHz
     metric_total = 0
     for file in sorted(os.listdir(path_original)):
