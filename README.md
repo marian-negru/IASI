@@ -1,8 +1,8 @@
 # BIOSINF, IASI Lab 5 - Speech Denoising & Pruning Methods
 
-In this lab we'll test a speech denoising algorithm and apply different pruning methods over the model. Audio examples will be recorded by the students for inference.
+In this lab we will test a speech denoising algorithm and apply different pruning methods over the model. Audio examples will be recorded by the students for inference.
 
-Clone this repo onto your local Jetson:
+Clone this repo in your local Jetson:
 ```bash
 git clone https://github.com/marian-negru/IASI.git
 ```
