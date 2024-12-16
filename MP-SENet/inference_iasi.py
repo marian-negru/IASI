@@ -15,11 +15,11 @@ from models.model import MPNet
 
 from rich.progress import track
 
-#
-from src.simplify_model import pruning, quantization
-from src.process_audio import windowing, dewindowing
+########## IASI to change
+#from src.simplify_model import pruning, quantization
+#from src.process_audio import windowing, dewindowing
 import copy
-#
+##########
 
 h = None
 device = None
