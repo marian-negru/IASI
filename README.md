@@ -10,3 +10,13 @@ git clone https://github.com/marian-negru/IASI.git
 ## Python packages
 
 For this lab, run the following script for dependencies:
+
+```bash
+bash install_dependencies.sh
+```
+
+After that, run the command:
+
+```bash
+pip3 install -r requirements.txt
+```
