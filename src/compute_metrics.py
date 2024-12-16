@@ -6,7 +6,7 @@ import librosa
 #torchmetrics.functional.audio.signal_noise_ratio(predict, target)
 #torchmetrics.functional.audio.scale_invariant_signal_distortion_ratio(predict, target)
 
-metric_function = torch.nn.L1Loss(reduction='mean')  # you can modify this
+metric_function = torch.nn.L1Loss(reduction='mean')  # you can try different functions
 
 def compute_metric(predict, target):    
     metric = metric_function(predict, target)
@@ -23,7 +23,7 @@ def check_differences():
         wav_pruned, _ = librosa.load(os.path.join(path_pruned, file), sr=sr)
         # call compute_metric
         metric = compute_metric(torch.from_numpy(wav_pruned), torch.from_numpy(wav_original))
-        print(f'metric is {metric:e}')
+        #print(f'metric is {metric:e}')
         metric_total += metric
     metric_total /= len(os.listdir(path_original))
     print(f'metric total is {metric_total:e}')
