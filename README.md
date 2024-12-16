@@ -1,4 +1,4 @@
-# BIOSINF, IASI Lab 2 - Speech Denoising & Pruning Methods
+# BIOSINF, IASI Lab 5 - Speech Denoising & Pruning Methods
 
 In this lab we'll test a speech denoising algorithm and apply different pruning methods over the model. Audio examples will be recorded by the students for inference.
 
